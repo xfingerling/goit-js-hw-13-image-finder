@@ -127,6 +127,29 @@ body {
   display: block;
 }
 
+.btn-up {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  padding: 20px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  background: rgb(194, 216, 71);
+  font-size: 20px;
+  color: #fff;
+}
+
+.btn-up:hover {
+  background: rgb(184, 192, 40);
+}
+
+.btn-up:active {
+  background: rgb(162, 168, 35);
+  box-shadow: 0 3px rgb(122, 147, 33) inset;
+}
+
 @media screen and (max-width: 1000px) {
   .gallery {
     grid-template-rows: 1fr 1fr;

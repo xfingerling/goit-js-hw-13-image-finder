@@ -8,6 +8,7 @@ const refs = {
   searchForm: document.querySelector("#search-form"),
   imgList: document.querySelector("#gallery"),
   loadMoreBtn: document.querySelector("#js-load-more"),
+  jsBtnUp: document.querySelector("#js-btn-up"),
 };
 
 function insertListItem(items) {
@@ -56,3 +57,18 @@ function loadMoreBtnHandler() {
 const debouncedLoadMore = debounce(loadMoreBtnHandler, 500);
 
 refs.loadMoreBtn.addEventListener("click", debouncedLoadMore);
+
+function toTopOfPage() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
+refs.jsBtnUp.addEventListener("click", toTopOfPage);
+
+function showBtnUp() {
+  refs.jsBtnUp.hidden = pageYOffset < document.documentElement.clientHeight;
+}
+
+window.addEventListener("scroll", showBtnUp);
