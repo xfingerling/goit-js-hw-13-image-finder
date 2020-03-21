@@ -11,10 +11,10 @@ export default {
 
     return fetch(baseUrl + API_KEY + requestParams)
       .then((res) => res.json())
-      .then((img) => {
+      .then((totalImg) => {
         this.incrementPage();
 
-        return img.hits;
+        return totalImg;
       });
   },
 

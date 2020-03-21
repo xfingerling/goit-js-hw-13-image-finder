@@ -60,8 +60,7 @@ body {
   margin: 0 10px;
   margin-bottom: 70px;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 2vw;
   list-style: none;
 }

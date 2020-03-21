@@ -1,9 +1,9 @@
+import * as basicLightbox from "basiclightbox";
+import PNotify from "../../node_modules/pnotify/dist/es/PNotify";
+
 import apiService from "./apiService";
 
 import imgListItemTemplate from "../templates/img-list-item.hbs";
-
-const basicLightbox = require("basiclightbox");
-// import * as basicLightbox from "basiclightbox";
 
 const debounce = require("lodash.debounce");
 
@@ -15,7 +15,7 @@ const refs = {
 };
 
 function insertListItem(items) {
-  const markup = imgListItemTemplate(items);
+  const markup = imgListItemTemplate(items.hits);
   refs.imgList.insertAdjacentHTML("beforeend", markup);
 }
 
@@ -30,12 +30,27 @@ function searchImg(e) {
   apiService.resetPage();
   refs.imgList.innerHTML = "";
   refs.loadMoreBtn.classList.remove("show");
+  PNotify.closeAll();
 
   apiService.serchQuery = inputValue;
 
   apiService
     .fetchImg()
-    .then(insertListItem)
+    .then((totalImg) => {
+      insertListItem(totalImg);
+
+      if (!totalImg.hits.length) {
+        PNotify.info({
+          text: "Your search did not match any results. Please try again",
+          delay: 3000,
+        });
+      }
+
+      PNotify.info({
+        text: `Your search returned ${totalImg.total} images`,
+        delay: 3000,
+      });
+    })
     .then(() => {
       if (refs.imgList.children.length) {
         refs.loadMoreBtn.classList.add("show");
