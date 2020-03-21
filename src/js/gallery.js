@@ -46,14 +46,10 @@ function loadMoreBtnHandler() {
       const scrollToElem =
         (apiService.page - 1) * apiService.perPage - apiService.perPage;
 
-      setTimeout(
-        () =>
-          refs.imgList.children[scrollToElem].scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          }),
-        400,
-      );
+      refs.imgList.children[scrollToElem].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     });
 }
 
