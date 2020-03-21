@@ -2,12 +2,12 @@ import apiService from "./apiService";
 
 import imgListItemTemplate from "../templates/img-list-item.hbs";
 
-const debounce = require("lodash.debounce");
+var debounce = require("lodash.debounce");
 
 const refs = {
   searchForm: document.querySelector("#search-form"),
   imgList: document.querySelector("#gallery"),
-  jsLoadMore: document.querySelector("#js-load-more"),
+  loadMoreBtn: document.querySelector("#js-load-more"),
 };
 
 function insertListItem(items) {
@@ -16,24 +16,47 @@ function insertListItem(items) {
 }
 
 function searchImg(e) {
-  const input = e.target;
-  const inputValue = input.value;
+  e.preventDefault();
+
+  const form = e.target;
+  const inputValue = form.firstElementChild.value;
 
   apiService.resetPage();
   refs.imgList.innerHTML = "";
 
   apiService.serchQuery = inputValue;
 
-  apiService.fetchImg().then(insertListItem);
+  apiService
+    .fetchImg()
+    .then(insertListItem)
+    .then(() => {
+      refs.loadMoreBtn.classList.add("show");
+    });
 
-  input.value = "";
+  form.firstElementChild.value = "";
 }
+
+refs.searchForm.addEventListener("submit", searchImg);
 
 function loadMoreBtnHandler() {
-  apiService.fetchImg().then(insertListItem);
+  apiService
+    .fetchImg()
+    .then(insertListItem)
+    .then(() => {
+      const scrollToElem =
+        (apiService.page - 1) * apiService.perPage - apiService.perPage;
+
+      setTimeout(
+        () =>
+          refs.imgList.children[scrollToElem].scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          }),
+        400,
+      );
+    });
 }
 
-const debouncedSearchImg = debounce(searchImg, 700);
+const debouncedLoadMore = debounce(loadMoreBtnHandler, 500);
 
-refs.searchForm.addEventListener("input", debouncedSearchImg);
-refs.jsLoadMore.addEventListener("click", loadMoreBtnHandler);
+refs.loadMoreBtn.addEventListener("click", debouncedLoadMore);
