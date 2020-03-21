@@ -2,7 +2,10 @@ import apiService from "./apiService";
 
 import imgListItemTemplate from "../templates/img-list-item.hbs";
 
-var debounce = require("lodash.debounce");
+const basicLightbox = require("basiclightbox");
+// import * as basicLightbox from "basiclightbox";
+
+const debounce = require("lodash.debounce");
 
 const refs = {
   searchForm: document.querySelector("#search-form"),
@@ -16,6 +19,8 @@ function insertListItem(items) {
   refs.imgList.insertAdjacentHTML("beforeend", markup);
 }
 
+// SEARCH IMG
+
 function searchImg(e) {
   e.preventDefault();
 
@@ -24,6 +29,7 @@ function searchImg(e) {
 
   apiService.resetPage();
   refs.imgList.innerHTML = "";
+  refs.loadMoreBtn.classList.remove("show");
 
   apiService.serchQuery = inputValue;
 
@@ -31,13 +37,17 @@ function searchImg(e) {
     .fetchImg()
     .then(insertListItem)
     .then(() => {
-      refs.loadMoreBtn.classList.add("show");
+      if (refs.imgList.children.length) {
+        refs.loadMoreBtn.classList.add("show");
+      }
     });
 
   form.firstElementChild.value = "";
 }
 
 refs.searchForm.addEventListener("submit", searchImg);
+
+// LOAD MORE
 
 function loadMoreBtnHandler() {
   apiService
@@ -58,6 +68,8 @@ const debouncedLoadMore = debounce(loadMoreBtnHandler, 500);
 
 refs.loadMoreBtn.addEventListener("click", debouncedLoadMore);
 
+// BUTTON UP
+
 function toTopOfPage() {
   window.scrollTo({
     top: 0,
@@ -68,7 +80,25 @@ function toTopOfPage() {
 refs.jsBtnUp.addEventListener("click", toTopOfPage);
 
 function showBtnUp() {
-  refs.jsBtnUp.hidden = pageYOffset < document.documentElement.clientHeight;
+  refs.jsBtnUp.hidden =
+    window.pageYOffset < document.documentElement.clientHeight;
 }
 
 window.addEventListener("scroll", showBtnUp);
+
+// MODAL
+
+function showModal(e) {
+  const { target } = e;
+  if (target.tagName === "IMG") {
+    basicLightbox
+      .create(
+        `
+    <img src="${target.dataset.largeImgSrc}" width="1280">
+    `,
+      )
+      .show();
+  }
+}
+
+refs.imgList.addEventListener("click", showModal);
