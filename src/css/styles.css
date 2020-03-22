@@ -171,4 +171,8 @@ body {
   .gallery {
     grid-template-columns: 1fr 1fr;
   }
+
+  .gallery__wrapper-img {
+    height: 300px;
+  }
 }
