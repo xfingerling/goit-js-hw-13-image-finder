@@ -5,8 +5,6 @@ import apiService from "./apiService";
 
 import imgListItemTemplate from "../templates/img-list-item.hbs";
 
-const debounce = require("lodash.debounce");
-
 const refs = {
   searchForm: document.querySelector("#search-form"),
   searchBtn: document.querySelector(".search-form__bnt"),
@@ -34,10 +32,6 @@ function searchImg(e) {
   PNotify.closeAll();
 
   apiService.serchQuery = inputValue;
-
-  // if (apiService.serchQuery === "") {
-  //   return;
-  // }
 
   apiService
     .fetchImg()
@@ -90,8 +84,6 @@ function loadMoreBtnHandler() {
   refs.loadMoreBtn.setAttribute("disabled", "disabled");
 }
 
-// const debouncedLoadMore = debounce(loadMoreBtnHandler, 500);
-
 refs.loadMoreBtn.addEventListener("click", loadMoreBtnHandler);
 
 // BUTTON UP
@@ -123,10 +115,18 @@ function showModal(e) {
 `,
     // { closable: false },
   );
+  // const instanceElem = instance.element();
 
   if (target.tagName === "IMG") {
     instance.show();
+    // document.body.classList.add("scroll-hidden");
+    // instanceElem.addEventListener("click", handleModalClick);
+    const modal = document.querySelector(
+      ".basicLightbox basicLightbox--img basicLightbox--visible",
+    );
+
+    console.log(modal);
   }
 }
 
-document.body.addEventListener("click", showModal);
+refs.imgList.addEventListener("click", showModal);
