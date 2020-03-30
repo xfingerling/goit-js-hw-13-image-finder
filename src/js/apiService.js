@@ -4,7 +4,7 @@ const API_KEY = "?key=15581732-f0b235014b6a569c91699f2a7";
 export default {
   _query: "",
   page: 1,
-  perPage: 12,
+  perPage: 15,
 
   fetchImg() {
     const requestParams = `&q=${this._query}&page=${this.page}&per_page=${this.perPage}&image_type=all&orientation=horizontal`;

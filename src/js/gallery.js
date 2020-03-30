@@ -9,6 +9,7 @@ const debounce = require("lodash.debounce");
 
 const refs = {
   searchForm: document.querySelector("#search-form"),
+  searchBtn: document.querySelector(".search-form__bnt"),
   imgList: document.querySelector("#gallery"),
   loadMoreBtn: document.querySelector("#js-load-more"),
   jsBtnUp: document.querySelector("#js-btn-up"),
@@ -34,6 +35,10 @@ function searchImg(e) {
 
   apiService.serchQuery = inputValue;
 
+  // if (apiService.serchQuery === "") {
+  //   return;
+  // }
+
   apiService
     .fetchImg()
     .then((totalImg) => {
@@ -53,9 +58,12 @@ function searchImg(e) {
     })
     .then(() => {
       if (refs.imgList.children.length) {
+        refs.searchBtn.removeAttribute("disabled");
         refs.loadMoreBtn.classList.add("show");
       }
     });
+
+  refs.searchBtn.setAttribute("disabled", "disabled");
 
   form.firstElementChild.value = "";
 }
@@ -76,12 +84,15 @@ function loadMoreBtnHandler() {
         behavior: "smooth",
         block: "start",
       });
+      refs.loadMoreBtn.removeAttribute("disabled");
     });
+
+  refs.loadMoreBtn.setAttribute("disabled", "disabled");
 }
 
-const debouncedLoadMore = debounce(loadMoreBtnHandler, 500);
+// const debouncedLoadMore = debounce(loadMoreBtnHandler, 500);
 
-refs.loadMoreBtn.addEventListener("click", debouncedLoadMore);
+refs.loadMoreBtn.addEventListener("click", loadMoreBtnHandler);
 
 // BUTTON UP
 
@@ -105,15 +116,17 @@ window.addEventListener("scroll", showBtnUp);
 
 function showModal(e) {
   const { target } = e;
+
+  const instance = basicLightbox.create(
+    `
+<img src=${target.dataset.largeImgSrc}" width="1280">
+`,
+    // { closable: false },
+  );
+
   if (target.tagName === "IMG") {
-    basicLightbox
-      .create(
-        `
-    <img src="${target.dataset.largeImgSrc}" width="1280">
-    `,
-      )
-      .show();
+    instance.show();
   }
 }
 
-refs.imgList.addEventListener("click", showModal);
+document.body.addEventListener("click", showModal);
