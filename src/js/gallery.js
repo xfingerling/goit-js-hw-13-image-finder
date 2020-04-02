@@ -106,27 +106,27 @@ window.addEventListener("scroll", showBtnUp);
 
 // MODAL
 
-function showModal(e) {
-  const { target } = e;
+// function showModal(e) {
+//   const { target } = e;
 
-  const instance = basicLightbox.create(
-    `
-<img src=${target.dataset.largeImgSrc}" width="1280">
-`,
-    // { closable: false },
-  );
-  // const instanceElem = instance.element();
+//   const instance = basicLightbox.create(
+//     `
+// <img src=${target.dataset.largeImgSrc}" width="1280">
+// `,
+//     // { closable: false },
+//   );
+//   // const instanceElem = instance.element();
 
-  if (target.tagName === "IMG") {
-    instance.show();
-    // document.body.classList.add("scroll-hidden");
-    // instanceElem.addEventListener("click", handleModalClick);
-    const modal = document.querySelector(
-      ".basicLightbox basicLightbox--img basicLightbox--visible",
-    );
+//   if (target.tagName === "IMG") {
+//     instance.show();
+//     // document.body.classList.add("scroll-hidden");
+//     // instanceElem.addEventListener("click", handleModalClick);
+//     const modal = document.querySelector(
+//       ".basicLightbox basicLightbox--img basicLightbox--visible",
+//     );
 
-    console.log(modal);
-  }
-}
+//     console.log(modal);
+//   }
+// }
 
-refs.imgList.addEventListener("click", showModal);
+// refs.imgList.addEventListener("click", showModal);
